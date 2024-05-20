@@ -46,7 +46,7 @@
 3. Create a `.env` file in the root directory and add the following environment variables:
 
 ```
-PORT=3000
+PORT=5000
 MONGODB_URI=your_mongodb_uri
 SESSION_SECRET=your_session_secret
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
@@ -59,7 +59,7 @@ EMAIL_FROM=your_email
 ## Usage
 
 1. Run `npm start` to start the server
-2. Visit `http://localhost:3000` in your browser
+2. Visit `http://localhost:5000/hello` in your browser (For testing purposes)
 
 ## License
 
