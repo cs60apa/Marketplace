@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-const userRoutes = require("./routes/userRoutes")
+const userRoutes = require("./routes/userRoutes");
 
 dotenv.config();
 
@@ -20,6 +20,6 @@ app.get("/hello", (req, res) => {
   res.status(200).send("Hello, Welcome to Lupleg Marketplace API!");
 });
 
-app.use("/api/v1/user", userRoutes)
+app.use("/user", userRoutes);
 
 module.exports = app;
