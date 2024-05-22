@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt")
 
 const userSchema = new mongoose.Schema(
   {
@@ -57,6 +58,12 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+userSchema.pre("save", async function(next){
+  // If password not modified
+  if(!this.isModified("password")) return next()
+
+})
 
 const User = mongoose.model("User", userSchema);
 
