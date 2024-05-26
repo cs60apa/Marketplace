@@ -22,15 +22,16 @@ exports.login = async (req, res) => {
 
   try {
     // 1. get user from db using email
-  const dbUser = await User.findOne({ email });
+    const dbUser = await User.findOne({ email }).select("+password");
 
-  // 2. check if user exists
-  if (!dbUser) {
-    res.status(404).json({
-      success: false,
-      message: "We do not have a user with that email",
-    });
-  } else {
+    // 2. check if user exists
+    if (!dbUser) {
+      return res.status(404).json({
+        success: false,
+        message: "We do not have a user with that email",
+      });
+    }
+
     // 3. compare passwords
     const comparePassword = await dbUser.comparePassword(
       password,
@@ -49,62 +50,20 @@ exports.login = async (req, res) => {
         }
       );
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         token,
       });
-    }else{
-      res.status(400).json({
+    } else {
+      return res.status(400).json({
         success: false,
-        message: "Password or Email is incorrect"
-      })
+        message: "Password or Email is incorrect",
+      });
     }
-  }
-    
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Something went wrong, please try again later"
-    })
-    
-  }
-  // 1. get user from db using email
-  const dbUser = await User.findOne({ email });
-
-  // 2. check if user exists
-  if (!dbUser) {
-    res.status(404).json({
-      success: false,
-      message: "We do not have a user with that email",
+      message: "Something went wrong, please try again later",
     });
-  } else {
-    // 3. compare passwords
-    const comparePassword = await dbUser.comparePassword(
-      password,
-      dbUser.password
-    );
-
-    if (comparePassword) {
-      // 4. create a jsonwebtoken
-      const token = jwt.sign(
-        {
-          id: dbUser._id,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: process.env.JWT_SECRET_EXPIRES,
-        }
-      );
-
-      res.status(200).json({
-        success: true,
-        token,
-      });
-    }else{
-      res.status(400).json({
-        success: false,
-        message: "Password or Email is incorrect"
-      })
-    }
   }
 };

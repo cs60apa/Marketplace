@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -59,17 +59,29 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre("save", async function(next){
+userSchema.pre("save", async function (next) {
   // If password not modified
-  if(!this.isModified("password")) return next() 
+  if (!this.isModified("password")) return next();
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(this.password, 12)
-    this.password = hashedPassword
-    next()
-
-})
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(this.password, 12);
+  this.password = hashedPassword;
+  next();
+});
+// Instance method to hash password
+userSchema.methods.comparePassword = async function (userPassword, dbPassword) {
+  return await bcrypt.compare(userPassword, dbPassword);
+};
 
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
+
+
+
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
