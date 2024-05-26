@@ -67,8 +67,3 @@ exports.login = async (req, res) => {
     });
   }
 };
-
-
-
-
-// ENDED 0N:
