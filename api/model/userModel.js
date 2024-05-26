@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema(
 
 userSchema.pre("save", async function(next){
   // If password not modified
-  if(!this.isModified("password")) return next() //ended on 1:05:26
+  if(!this.isModified("password")) return next() 
 
 })
 
