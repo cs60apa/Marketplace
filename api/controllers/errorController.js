@@ -35,6 +35,18 @@ module.exports = (err, req, res, next) => {
     err = new AppError(duplicateMessage, 400);
   }
 
+  // 4. handle wrong JWT error
+  if (err.name === "JsonWebTokenError") {
+    const jwtMsg = `Your url is invalid. Please try again later`;
+    err = new AppError(jwtMsg, 400);
+  }
+
+  // 5. handle expired JWT error
+  if (err.name === "TokenExpiredError") {
+    const jwtMsg = `Your url has expired. Please try again later`;
+    err = new AppError(jwtMsg, 400);
+  }
+
   if (process.env.NODE_ENV !== "production") {
     // Development error handing
     res.status(err.statusCode).json({
