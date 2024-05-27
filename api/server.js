@@ -16,10 +16,26 @@ const connectToMongo = () => {
     });
 };
 
+// handle uncaught exception
+process.on("uncaughtException", (err) => {
+  console.log("Error = " + err.message);
+  console.log("Shutting down the application due to uncaught exception");
+});
+
 connectToMongo();
 
 const port = process.env.PORT || 8000;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log("Our app is running on PORT " + port);
+});
+
+// handle unhandled promise rejection
+process.on("unhandledRejection", (err) => {
+  console.log(`${err.name} ${err.message}`);
+  // close the server
+  server.close(() => {
+    // exit the node process
+    process.exit(1);
+  });
 });

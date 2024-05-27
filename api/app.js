@@ -7,6 +7,7 @@ const cors = require("cors");
 
 const userRoutes = require("./routes/userRoutes");
 const AppError = require("./utils/AppError");
+const GlobalErrorHandler = require("./controllers/errorController");
 
 dotenv.config();
 
@@ -31,5 +32,7 @@ app.all("*", (req, res, next) => {
     )
   );
 });
+
+app.use(GlobalErrorHandler);
 
 module.exports = app;
