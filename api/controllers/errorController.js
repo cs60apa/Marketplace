@@ -17,6 +17,26 @@ module.exports = (err, req, res, next) => {
     err = new AppError(validationMsg, 400);
   }
 
+  // 3. Duplicate data error
+  if (err.code === 11000) {
+
+    const regex = /\{([^}]*)\}/ //regular expression
+    const match = err.message.match(regex);
+
+    let str = ""
+
+    if (match && match.length > 1) {
+      str = match[1]
+    }else{
+      str = "A field"
+    }
+
+    const duplicateMessage = `${str} already exists. Please use another value`;
+
+
+    err = new AppError(duplicateMessage, 400);
+  }
+
   if (process.env.NODE_ENV !== "production") {
     // Development error handing
     res.status(err.statusCode).json({
