@@ -19,20 +19,18 @@ module.exports = (err, req, res, next) => {
 
   // 3. Duplicate data error
   if (err.code === 11000) {
-
-    const regex = /\{([^}]*)\}/ //regular expression
+    const regex = /\{([^}]*)\}/; //regular expression
     const match = err.message.match(regex);
 
-    let str = ""
+    let str = "";
 
     if (match && match.length > 1) {
-      str = match[1]
-    }else{
-      str = "A field"
+      str = match[1];
+    } else {
+      str = "A field";
     }
 
     const duplicateMessage = `${str} already exists. Please use another value`;
-
 
     err = new AppError(duplicateMessage, 400);
   }
