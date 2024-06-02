@@ -32,10 +32,7 @@
 - Multer
 - Cloudinary
 - Nodemailer
-- Nodemailer-sendgrid-transport
 - Express-validator
-- Helmet
-- Compression
 - Morgan
 - Nodemon
 
