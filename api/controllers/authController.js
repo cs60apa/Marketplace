@@ -2,8 +2,7 @@ const User = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
-const { novu } = require("@novu/node");
-
+const novu = require("@novu/node");
 
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_SECRET, { expiresIn: "10m" });
