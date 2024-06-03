@@ -3,27 +3,40 @@ const jwt = require("jsonwebtoken");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 
+const createActivationToken = (user) => {
+  return jwt.sign(user, process.env.ACTIVATION_SECRET, { expiresIn: "10m" });
+};
+
 // Register a new user
 exports.register = catchAsync(async (req, res, next) => {
   const { email, storename, password, name } = req.body;
   // account-activation
 
-// 1. Activation token
+  // 1. Activation token
+  const createActivationToken = createActivationToken();
 
-// 2. Comfirmation link
+  // 2. Confirmation link
+  const ConfirmationLink = `${process.env.FRONTEN_URL}/activation?activationToken=${activationToken}`;
 
-// 3. Create a subscriber using strorename
+  // 3. Create a subscriber using strorename
+  await novu.subscribers.identify(storename, {
+    firstName: name,
+    email,
+  });
 
-// 4. Triger notification
+  // 4. Triger notification
+  await novu,
+    trigger("account-activation", {
+      to: {
+        subscriberId: storename,
+      },
+      payload: {
+        company: "Lupleg",
+        ConfirmationLink,
+      },
+    });
 
-// 5. Send response
-
-
-
-
-  
-
-  const user = await User.create({ email, storename, password, name });
+  // 5. Send response
   res.status(200).json({
     success: true,
     message: ``,
