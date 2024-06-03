@@ -7,6 +7,8 @@ const AppError = require("../utils/AppError");
 exports.register = catchAsync(async (req, res, next) => {
   const { email, storename, password, name } = req.body;
 
+  // account-activation
+
   const user = await User.create({ email, storename, password, name });
   res.status(200).json({
     success: true,
