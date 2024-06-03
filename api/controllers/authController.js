@@ -13,7 +13,12 @@ exports.register = catchAsync(async (req, res, next) => {
   // account-activation
 
   // 1. Activation token
-  const createActivationToken = createActivationToken();
+  const activationToken = createActivationToken({
+    email,
+    storename,
+    password,
+    name,
+  });
 
   // 2. Confirmation link
   const ConfirmationLink = `${process.env.FRONTEN_URL}/activation?activationToken=${activationToken}`;
@@ -39,7 +44,7 @@ exports.register = catchAsync(async (req, res, next) => {
   // 5. Send response
   res.status(200).json({
     success: true,
-    message: ``,
+    message: `Please go to your email -${email} to activate your account`,
   });
 });
 
