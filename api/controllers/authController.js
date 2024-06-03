@@ -21,7 +21,7 @@ exports.register = catchAsync(async (req, res, next) => {
   });
 
   // 2. Confirmation link
-  const ConfirmationLink = `${process.env.FRONTEN_URL}/activation?activationToken=${activationToken}`;
+  const ConfirmationLink = `${process.env.FRONTEND_URL}/activation?activationToken=${activationToken}`;
 
   // 3. Create a subscriber using strorename
   await novu.subscribers.identify(storename, {
@@ -47,6 +47,17 @@ exports.register = catchAsync(async (req, res, next) => {
     message: `Please go to your email -${email} to activate your account`,
   });
 });
+
+// Activate user account
+exports.activateUser = catchAsync(async (req, res, next) => {
+  // 1. verify token
+
+  // 2. check if user data is available and find the user
+
+  // 3. if there is a user, throw error else create user
+
+  // 4. delete subcribe with storename
+})
 
 // Login user
 exports.login = catchAsync(async (req, res) => {
