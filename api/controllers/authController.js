@@ -51,13 +51,36 @@ exports.register = catchAsync(async (req, res, next) => {
 // Activate user account
 exports.activateUser = catchAsync(async (req, res, next) => {
   // 1. verify token
+  const userData = jwt.verify(
+    req.body.activationToken,
+    process.env.ACTIVATION_SECRET
+  );
 
   // 2. check if user data is available and find the user
+  if (!userData) return next(new AppError("your token is wrong", 400));
+
+let user = await User.findOne({ email: userData.email });
 
   // 3. if there is a user, throw error else create user
+  if (user) {
+    return next(new AppError("User already exists", 400));
+  } else {
+    user = await User.create(userData)
+    // 4. delete subcribe with storename
+    await novu.subscribers.delete(userData.storename);
 
-  // 4. delete subcribe with storename
-})
+
+    // create subscriber with newly created userId
+    await novu.subscribers.identify(user._id);
+  }
+
+  // 6. send response
+  res.status(200).json({
+    success: true,
+    message: "Account activated successfully",
+  });
+
+});
 
 // Login user
 exports.login = catchAsync(async (req, res) => {
