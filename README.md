@@ -1,4 +1,4 @@
-# Lupleg Marketplace - README
+# Marketplace - README
 
 ## Description
 
